@@ -1,9 +1,11 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const { menu } = require("./menu");
+const path = require("path");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -20,10 +22,12 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
+      preload: path.join(__dirname, "/../src/preload.js"),
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
-    }
+    },
+    frame: false // Remove frame to hide default menu
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -40,6 +44,19 @@ function createWindow() {
     win = null
   })
 }
+
+// Register an event listener.
+// ipcRenderer sends mouse click coordinates.
+// Shows menu pop-up at those coordinates.
+ipcMain.on(`display-app-menu`, function(e, args) {
+  if (win) {
+    menu.popup({
+      window: win,
+      x: args.x,
+      y: args.y
+    });
+  }
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
