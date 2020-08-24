@@ -69,7 +69,6 @@ export default {
   },
   computed: {
     screenStateIcon() {
-      console.log(this.isMaximized)
       return this.isMaximized ? ['far', 'clone'] : ['far', 'square']
     }
   }
