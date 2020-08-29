@@ -1,6 +1,6 @@
 <template>
   <div id="background">
-    <img alt="background image" src="../assets/sample-bg.jpg">
+    <img alt="background image" src="background/sample-bg.jpg">
   </div>
 </template>
 
