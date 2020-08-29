@@ -1,32 +1,43 @@
 <template>
-	<div class="controls">
+	<div class="controlbar">
+    <h2>{{ currentTrack.title }} - {{ currentTrack.artist }}</h2>
 		<button class="prev" @click="prev">Prev</button>
 		<button class="play" v-if="!currentTrack.howl.playing()" 
 		@click="play(currentTrack)">Play</button>
 		<button class="pause" v-else @click="pause">Pause</button>
 		<button class="next" @click="next">Next</button>
+		<input v-model="volume" type="range" min="0" max="1" step="0.01" @input="updateVolume(volume)"/>
 	</div>
 </template>
 
 <script>
+const { Howler } = window.require('howler')
 export default {
-  name: 'ControlBar',
+	name: 'ControlBar',
+	data() {
+		return {
+			volume: 0.5
+		}
+	},
   props: {
-    currentTrack: Object
+    currentTrack: Object,
   },
   methods: {
     play(selectedTrack) {
-			this.$emit('play', selectedTrack)
+			this.$emit('play', selectedTrack);
     },
     pause() {
-			this.$emit('pause')
+			this.$emit('pause');
     },
     prev() {
-			this.$emit('prev')
+			this.$emit('prev');
     },
     next() {
-			this.$emit('next')
-    }
+			this.$emit('next');
+		},
+		updateVolume(newVolume) {
+			Howler.volume(newVolume);
+		}
   }
 }
 </script>
@@ -61,7 +72,7 @@ a {
   font-style: italic;
 }
 
-.controls {
+.controlbar {
   display: flex;
   justify-content: center;
   align-items: center;

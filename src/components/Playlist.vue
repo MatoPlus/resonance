@@ -1,6 +1,5 @@
 <template>
   <div id="playlist">
-    <h2>{{ currentTrack.title }} - {{ currentTrack.artist }}</h2>
     <button v-for="(track, index) in tracks" :key="track.title" @click="play(track)"
     :class="(track.howl == currentTrack.howl) ? 'track playing' : 'track'">
       {{ index | numbers }} {{ track.title }} - {{ track.artist }} <span class="duration">{{ track.howl.duration() | minutes }}</span>
