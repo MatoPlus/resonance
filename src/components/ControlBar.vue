@@ -1,41 +1,31 @@
 <template>
-  <div id="playlist">
-    <h2>{{ currentTrack.title }} - {{ currentTrack.artist }}</h2>
-    <button v-for="(track, index) in tracks" :key="track.title" @click="play(track)"
-    :class="(track.howl == currentTrack.howl) ? 'track playing' : 'track'">
-      {{ index | numbers }} {{ track.title }} - {{ track.artist }} <span class="duration">{{ track.howl.duration() | minutes }}</span>
-    </button>
-  </div>
+	<div class="controls">
+		<button class="prev" @click="prev">Prev</button>
+		<button class="play" v-if="!currentTrack.howl.playing()" 
+		@click="play(currentTrack)">Play</button>
+		<button class="pause" v-else @click="pause">Pause</button>
+		<button class="next" @click="next">Next</button>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'Playlist',
+  name: 'ControlBar',
   props: {
-    tracks: Array,
     currentTrack: Object
   },
   methods: {
     play(selectedTrack) {
-      this.$emit('play', selectedTrack)
-    }
-  },
-  filters: {
-    numbers: function(value) {
-      let number = value + 1
-      if (number < 10) {
-        return "0" + number + "."
-      } 
-      return number + "."
+			this.$emit('play', selectedTrack)
     },
-    minutes: function(value) {
-      if (!value || typeof value !== "number") return "00:00"
-      let min = parseInt(value / 60),
-          sec = parseInt(value % 60)
-      min = min < 10 ? "0" + min : min
-      sec = sec < 10 ? "0" + sec : sec
-      value = min + ":" + sec
-      return value
+    pause() {
+			this.$emit('pause')
+    },
+    prev() {
+			this.$emit('prev')
+    },
+    next() {
+			this.$emit('next')
     }
   }
 }
