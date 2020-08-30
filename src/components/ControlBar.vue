@@ -6,6 +6,14 @@
 		@click="play(currentTrack)">Play</button>
 		<button class="pause" v-else @click="pause">Pause</button>
 		<button class="next" @click="next">Next</button>
+    <button flat icon @click="toggleMute">
+      <template v-if="!this.muted">
+        <fa-icon :icon="['fas', 'volume-up']" v-if="this.volume >= 0.5"/>
+        <fa-icon :icon="['fas', 'volume-down']" v-else-if="this.volume > 0"/>
+        <fa-icon :icon="['fas', 'volume-off']" v-else/>
+      </template>
+      <fa-icon :icon="['fas', 'volume-mute']" v-show="this.muted"/>
+    </button>
 		<input v-model="volume" type="range" min="0" max="1" step="0.01" @input="updateVolume(volume)"/>
 	</div>
 </template>
@@ -16,7 +24,8 @@ export default {
 	name: 'ControlBar',
 	data() {
 		return {
-			volume: 0.5
+      volume: 0.5,
+      muted: false
 		}
 	},
   props: {
@@ -37,7 +46,11 @@ export default {
 		},
 		updateVolume(newVolume) {
 			Howler.volume(newVolume);
-		}
+    },
+    toggleMute() {
+      Howler.mute(!this.muted);
+      this.muted = !this.muted;
+    }
   }
 }
 </script>
