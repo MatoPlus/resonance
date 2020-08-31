@@ -43,18 +43,9 @@ export default {
   },
   methods: {
     play(selectedTrack) {
-      let newIndex = this.tracks.findIndex(track => track === selectedTrack);
-      if (newIndex != this.index) {
-        this.currentTrack.howl.stop();
-        this.index = newIndex;
-      }
-      if (!this.currentTrack.howl.playing()) {
-        this.currentTrack.howl.play();
-      }
-      // Play next track when current track ends
-      this.currentTrack.howl.on('end', function(){
-        this.next();
-      }.bind(this));
+      this.currentTrack.howl.stop();
+      this.index = this.tracks.findIndex(track => track === selectedTrack);
+      this.currentTrack.howl.play();
     },
     pause() {
       this.currentTrack.howl.pause();
