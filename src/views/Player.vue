@@ -4,7 +4,8 @@
       <Background/>
       <Playlist :tracks="tracks" :currentTrack="currentTrack" @play="play"/>
     </div>
-    <ControlBar :currentTrack="currentTrack" @play="play" @pause="pause" @prev="prev" @next="next"/>
+    <ControlBar :currentTrack="currentTrack" :loop="loop" @play="play" 
+    @pause="pause" @prev="prev" @next="next" @toggleLoop="toggleLoop" @shufflePlaylist="shufflePlaylist"/>
   </div>
 </template>
 
@@ -30,6 +31,7 @@ export default {
   data() {
     return {
       index: 0,
+      loop: false,
       tracks: [
         {
           title: 'song title',
@@ -62,14 +64,22 @@ export default {
       if (newIndex < 0) {
         newIndex = this.tracks.length - 1;
       }
-      this.play(this.tracks[newIndex])
+      this.play(this.tracks[newIndex]);
     },
     next() {
       let newIndex = this.index + 1;
       if (newIndex > this.tracks.length - 1) {
         newIndex = 0;
       }
-      this.play(this.tracks[newIndex])
+      this.play(this.tracks[newIndex]);
+    },
+    toggleLoop() {
+      this.loop = !this.loop;
+    },
+    shufflePlaylist() {
+      this.currentTrack.howl.stop();
+      this.tracks.sort(() => Math.random() - 0.5);
+      this.play(this.tracks[0]);
     }
   },
   created() {
@@ -77,7 +87,15 @@ export default {
     this.tracks.forEach( (track) => {
       let file = track.title.replace(/\s/g, "_")
       track.howl = new Howl({
-        src: [`playlist/${file}.mp3`]
+        src: [`playlist/${file}.mp3`],
+        onend: () => {
+          if (this.loop) {
+            this.play(this.currentTrack);
+          }
+          else {
+            this.next();
+          }
+        }
       });
     })
   }

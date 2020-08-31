@@ -1,11 +1,18 @@
 <template>
 	<div class="controlbar">
     <h2>{{ currentTrack.title }} - {{ currentTrack.artist }}</h2>
+    <button flat icon @click="shufflePlaylist">
+      <fa-icon :icon="['fas', 'random']"/>
+    </button>
 		<button class="prev" @click="prev">Prev</button>
 		<button class="play" v-if="!currentTrack.howl.playing()" 
 		@click="play(currentTrack)">Play</button>
 		<button class="pause" v-else @click="pause">Pause</button>
 		<button class="next" @click="next">Next</button>
+    <button flat icon @click="toggleLoop">
+      <fa-icon style="color: blue" v-if="this.loop" :icon="['fas', 'redo-alt']"/>
+      <fa-icon style="color: black" v-else :icon="['fas', 'redo-alt']"/>
+    </button>
     <button flat icon @click="toggleMute">
       <template v-if="!this.muted">
         <fa-icon :icon="['fas', 'volume-up']" v-if="this.volume >= 0.5"/>
@@ -30,6 +37,7 @@ export default {
 	},
   props: {
     currentTrack: Object,
+    loop: Boolean
   },
   methods: {
     play(selectedTrack) {
@@ -50,6 +58,12 @@ export default {
     toggleMute() {
       Howler.mute(!this.muted);
       this.muted = !this.muted;
+    },
+    toggleLoop() {
+      this.$emit('toggleLoop');
+    },
+    shufflePlaylist() {
+      this.$emit('shufflePlaylist');
     }
   }
 }
