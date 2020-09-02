@@ -1,13 +1,13 @@
 <template>
   <div id="background">
-    <img alt="background image" src="background/sample-bg.jpg">
+    <img alt="background image" src="background/sample-bg.jpg" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Background'
-}
+  name: "Background",
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

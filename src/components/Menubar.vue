@@ -2,19 +2,31 @@
   <div id="menu-bar">
     <div class="left" role="menu">
       <button class="menubar-btn" id="menu-btn" @click="openMenu">
-        <fa-icon id="menu-icon" :icon="['fas', 'bars']" style="color: white"/>
+        <fa-icon id="menu-icon" :icon="['fas', 'bars']" style="color: white" />
       </button>
       <h5 id="title">Resonance</h5>
     </div>
     <div class="right">
       <button class="menubar-btn" id="minimize-btn" @click="minimizeWindow">
-        <fa-icon id="minimize-icon" :icon="['fas', 'window-minimize']" style="color: white"/>
+        <fa-icon
+          id="minimize-icon"
+          :icon="['fas', 'window-minimize']"
+          style="color: white"
+        />
       </button>
       <button class="menubar-btn" id="max-unmax-btn" @click="maxUnmaxWindow">
-        <fa-icon id="max-unmax-icon" :icon="screenStateIcon" style="color: white"/>
+        <fa-icon
+          id="max-unmax-icon"
+          :icon="screenStateIcon"
+          style="color: white"
+        />
       </button>
       <button class="menubar-btn" id="close-btn" @click="closeWindow">
-        <fa-icon id="close-icon" :icon="['fas', 'times']" style="color: white"/>
+        <fa-icon
+          id="close-icon"
+          :icon="['fas', 'times']"
+          style="color: white"
+        />
       </button>
     </div>
   </div>
@@ -27,8 +39,8 @@ export default {
   name: "Menubar",
   data() {
     return {
-      isMaximized: this.getCurrentWindow().isMaximized()
-    }
+      isMaximized: this.getCurrentWindow().isMaximized(),
+    };
   },
   methods: {
     getCurrentWindow: function() {
@@ -69,9 +81,9 @@ export default {
   },
   computed: {
     screenStateIcon() {
-      return this.isMaximized ? ['far', 'clone'] : ['far', 'square']
-    }
-  }
+      return this.isMaximized ? ["far", "clone"] : ["far", "square"];
+    },
+  },
 };
 </script>
 

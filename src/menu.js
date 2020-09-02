@@ -5,7 +5,7 @@ const isMac = process.platform === "darwin";
 const template = [
   {
     label: "File",
-    submenu: [isMac ? { role: "close" } : { role: "quit" }]
+    submenu: [isMac ? { role: "close" } : { role: "quit" }],
   },
   // { role: 'editMenu' }
   {
@@ -16,8 +16,8 @@ const template = [
       { type: "separator" },
       { role: "cut" },
       { role: "copy" },
-      { role: "paste" }
-    ]
+      { role: "paste" },
+    ],
   },
   // { role: 'viewMenu' }
   {
@@ -31,13 +31,13 @@ const template = [
       { role: "zoomin" },
       { role: "zoomout" },
       { type: "separator" },
-      { role: "togglefullscreen" }
-    ]
+      { role: "togglefullscreen" },
+    ],
   },
   // { role: 'windowMenu' }
   {
     label: "Window",
-    submenu: [{ role: "minimize" }, { role: "zoom" }]
+    submenu: [{ role: "minimize" }, { role: "zoom" }],
   },
   {
     role: "help",
@@ -47,15 +47,15 @@ const template = [
         click: async () => {
           const { shell } = require("electron");
           await shell.openExternal("https://electronjs.org");
-        }
-      }
-    ]
-  }
+        },
+      },
+    ],
+  },
 ];
 
 const menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
 module.exports = {
-  menu
+  menu,
 };

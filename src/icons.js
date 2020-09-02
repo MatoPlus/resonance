@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import Vue from "vue";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faBars,
   faWindowMinimize,
@@ -10,9 +10,9 @@ import {
   faVolumeOff,
   faVolumeMute,
   faRedoAlt,
-  faRandom
+  faRandom,
 } from "@fortawesome/free-solid-svg-icons";
-import { faSquare, faClone } from '@fortawesome/free-regular-svg-icons'
+import { faSquare, faClone } from "@fortawesome/free-regular-svg-icons";
 
 library.add(
   faBars,
@@ -27,4 +27,4 @@ library.add(
   faRedoAlt,
   faRandom
 );
-Vue.component('fa-icon', FontAwesomeIcon)
+Vue.component("fa-icon", FontAwesomeIcon);
