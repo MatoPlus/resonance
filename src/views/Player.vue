@@ -2,10 +2,21 @@
   <div class="player">
     <div id="view">
       <Background/>
-      <Playlist :tracks="tracks" :currentTrack="currentTrack" @play="play"/>
+      <Playlist
+      :tracks="tracks"
+      :currentTrack="currentTrack"
+      @play="play"/>
     </div>
-    <ControlBar :currentTrack="currentTrack" :loop="loop" @play="play" 
-    @pause="pause" @prev="prev" @next="next" @toggleLoop="toggleLoop" @shufflePlaylist="shufflePlaylist"/>
+    <ControlBar
+    :currentTrack="currentTrack"
+    :loop="loop" 
+    :playing="playing"
+    @play="play"
+    @pause="pause"
+    @prev="prev"
+    @next="next"
+    @toggleLoop="toggleLoop"
+    @shufflePlaylist="shufflePlaylist"/>
   </div>
 </template>
 
@@ -32,6 +43,7 @@ export default {
     return {
       index: 0,
       loop: false,
+      playing: false,
       tracks: [
         {
           title: 'song title',
@@ -46,9 +58,11 @@ export default {
       this.currentTrack.howl.stop();
       this.index = this.tracks.findIndex(track => track === selectedTrack);
       this.currentTrack.howl.play();
+      this.playing = true
     },
     pause() {
       this.currentTrack.howl.pause();
+      this.playing = false
     },
     prev() {
       let newIndex = this.index - 1;

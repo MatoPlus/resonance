@@ -1,5 +1,7 @@
 <template>
 	<div class="controlbar">
+		<input v-model="trackProgress" type="range" min="0" max="1" step="0.01"
+    @input="updateTrackProgress(trackProgress)"/>
     <h2>{{ currentTrack.title }} - {{ currentTrack.artist }}</h2>
     <button flat icon @click="shufflePlaylist">
       <fa-icon :icon="['fas', 'random']"/>
@@ -21,23 +23,27 @@
       </template>
       <fa-icon :icon="['fas', 'volume-mute']" v-show="this.muted"/>
     </button>
-		<input v-model="volume" type="range" min="0" max="1" step="0.01" @input="updateVolume(volume)"/>
+		<input v-model="volume" type="range" min="0" max="1" step="0.01"
+    @input="updateVolume(volume)"/>
 	</div>
 </template>
 
 <script>
 const { Howler } = window.require('howler')
 export default {
-	name: 'ControlBar',
+  name: 'ControlBar',
 	data() {
 		return {
       volume: 0.5,
-      muted: false
+      muted: false,
+      seek: 0,
+      trackProgress: 0
 		}
 	},
   props: {
     currentTrack: Object,
-    loop: Boolean
+    loop: Boolean,
+    playing: Boolean
   },
   methods: {
     play(selectedTrack) {
@@ -55,6 +61,13 @@ export default {
 		updateVolume(newVolume) {
 			Howler.volume(newVolume);
     },
+    updateTrackProgress(progress) {
+      let trackHowl = this.currentTrack.howl
+      if (trackHowl.playing()) {
+        this.seek = trackHowl.duration() * progress;
+        trackHowl.seek(this.seek);
+      }
+    },
     toggleMute() {
       Howler.mute(!this.muted);
       this.muted = !this.muted;
@@ -65,7 +78,30 @@ export default {
     shufflePlaylist() {
       this.$emit('shufflePlaylist');
     }
-  }
+  },
+  watch: {
+    playing(playing) {
+      this.seek = this.currentTrack.howl.seek();
+      let updateSeek;
+      if (playing) {
+        updateSeek = setInterval(() => {
+          this.seek = this.currentTrack.howl.seek()
+        }, 250)
+      }
+      else {
+        clearInterval(updateSeek)
+      }
+    },
+    seek(seek) {
+      if (this.currentTrack.howl.duration() === 0) {
+        this.trackProgress = 0
+      }
+      else {
+        this.trackProgress = seek / this.currentTrack.howl.duration()
+      }
+    }
+  },
+
 }
 </script>
 
