@@ -58,22 +58,6 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
-a {
-  color: #42b983;
-}
-
-.track-title {
-  color: #53565a;
-  font-size: 32px;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.track-title span {
-  font-weight: 400;
-  font-style: italic;
-}
 
 .controls {
   display: flex;
@@ -94,30 +78,8 @@ button:hover {
   opacity: 0.8;
 }
 
-.play,
-.pause {
-  font-size: 20px;
-  font-weight: 700;
-  padding: 15px 25px;
-  margin: 0px 15px;
-  border-radius: 8px;
-  color: #fff;
-  background-color: #cc2e5d;
-}
-
-.next,
-.prev {
-  font-size: 16px;
-  font-weight: 700;
-  padding: 10px 20px;
-  margin: 0px 15px;
-  border-radius: 6px;
-  color: #fff;
-  background-color: #ff5858;
-}
-
 #playlist {
-  padding: 0px 30px;
+  padding: 30px 0px;
 }
 
 #playlist h3 {
@@ -133,21 +95,28 @@ button:hover {
   width: 100%;
   padding: 15px;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   text-align: left;
+  color: white;
 }
 
 #playlist .track:hover {
-  color: #ff5858;
+  color: skyblue;
 }
 
 #playlist .track.playing {
   color: #fff;
-  background-image: linear-gradient(to right, #cc2e5d, #ff5858);
+  background-image: linear-gradient(to right, skyblue, royalblue);
 }
 
 .duration {
   float: right;
+}
+
+#playing-icon {
+  font-size: 10px;
+  position: relative;
+  bottom: 3px;
 }
 </style>

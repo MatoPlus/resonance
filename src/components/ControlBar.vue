@@ -1,51 +1,76 @@
 <template>
   <div class="controlbar">
-    <input
-      v-model="trackProgress"
-      type="range"
-      min="0"
-      max="1"
-      step="0.01"
-      @input="updateTrackProgress(trackProgress)"
-    />
-    <h2>{{ currentTrack.title }} - {{ currentTrack.artist }}</h2>
-    <button flat icon @click="shufflePlaylist">
-      <fa-icon :icon="['fas', 'random']" />
-    </button>
-    <button class="prev" @click="prev">Prev</button>
-    <button
-      class="play"
-      v-if="!currentTrack.howl.playing()"
-      @click="play(currentTrack)"
-    >
-      Play
-    </button>
-    <button class="pause" v-else @click="pause">Pause</button>
-    <button class="next" @click="next">Next</button>
-    <button flat icon @click="toggleLoop">
-      <fa-icon
-        style="color: blue"
-        v-if="this.loop"
-        :icon="['fas', 'redo-alt']"
+    <div class="seekbar">
+      <span>{{ currentTrack.howl.seek() | minutes }}</span>
+      <input
+        id="seekbar"
+        v-model="trackProgress"
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        @input="updateTrackProgress(trackProgress)"
       />
-      <fa-icon style="color: black" v-else :icon="['fas', 'redo-alt']" />
-    </button>
-    <button flat icon @click="toggleMute">
-      <template v-if="!this.muted">
-        <fa-icon :icon="['fas', 'volume-up']" v-if="this.volume >= 0.5" />
-        <fa-icon :icon="['fas', 'volume-down']" v-else-if="this.volume > 0" />
-        <fa-icon :icon="['fas', 'volume-off']" v-else />
-      </template>
-      <fa-icon :icon="['fas', 'volume-mute']" v-show="this.muted" />
-    </button>
-    <input
-      v-model="volume"
-      type="range"
-      min="0"
-      max="1"
-      step="0.01"
-      @input="updateVolume(volume)"
-    />
+      <span>{{ currentTrack.howl.duration() | minutes }}</span>
+    </div>
+    <div class="controls">
+      <div class="left-bar">
+        <span id="info"
+          >{{ currentTrack.title }} - {{ currentTrack.artist }}</span
+        >
+      </div>
+      <div class="center-bar">
+        <button id="shuffle" class="fa-button" @click="shufflePlaylist">
+          <fa-icon :icon="['fas', 'random']" />
+        </button>
+        <button class="prev fa-button" @click="prev">
+          <fa-icon :icon="['fas', 'step-backward']" />
+        </button>
+        <button
+          class="play fa-button"
+          v-if="!currentTrack.howl.playing()"
+          @click="play(currentTrack)"
+        >
+          <fa-icon :icon="['far', 'play-circle']" />
+        </button>
+        <button class="pause fa-button" v-else @click="pause">
+          <fa-icon :icon="['far', 'pause-circle']" />
+        </button>
+        <button class="next fa-button" @click="next">
+          <fa-icon :icon="['fas', 'step-forward']" />
+        </button>
+        <button id="loop" class="fa-button" @click="toggleLoop">
+          <fa-icon
+            style="color: steelblue"
+            v-if="this.loop"
+            :icon="['fas', 'redo-alt']"
+          />
+          <fa-icon style="color: white" v-else :icon="['fas', 'redo-alt']" />
+        </button>
+      </div>
+      <div class="right-bar">
+        <button id="volume" class="fa-button" @click="toggleMute">
+          <template v-if="!this.muted">
+            <fa-icon :icon="['fas', 'volume-up']" v-if="this.volume >= 0.5" />
+            <fa-icon
+              :icon="['fas', 'volume-down']"
+              v-else-if="this.volume > 0"
+            />
+            <fa-icon :icon="['fas', 'volume-off']" v-else />
+          </template>
+          <fa-icon :icon="['fas', 'volume-mute']" v-show="this.muted" />
+        </button>
+        <input
+          id="volume-slider"
+          v-model="volume"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          @input="updateVolume(volume)"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -100,6 +125,17 @@ export default {
       this.$emit("shufflePlaylist");
     },
   },
+  filters: {
+    minutes: function(value) {
+      if (!value || typeof value !== "number") return "00:00";
+      let min = parseInt(value / 60),
+        sec = parseInt(value % 60);
+      min = min < 10 ? "0" + min : min;
+      sec = sec < 10 ? "0" + sec : sec;
+      value = min + ":" + sec;
+      return value;
+    },
+  },
   watch: {
     playing(playing) {
       this.seek = this.currentTrack.howl.seek();
@@ -140,24 +176,18 @@ a {
   color: #42b983;
 }
 
-.track-title {
-  color: #53565a;
-  font-size: 32px;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.track-title span {
-  font-weight: 400;
-  font-style: italic;
+span {
+  color: white;
 }
 
 .controlbar {
+  background: #34475a;
+}
+
+.controls {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 30px 15px;
+  /* justify-content: center;
+  align-items: center; */
 }
 
 button {
@@ -172,60 +202,114 @@ button:hover {
   opacity: 0.8;
 }
 
+span {
+  padding: 0px 10px;
+}
+
 .play,
 .pause {
-  font-size: 20px;
-  font-weight: 700;
-  padding: 15px 25px;
-  margin: 0px 15px;
-  border-radius: 8px;
-  color: #fff;
-  background-color: #cc2e5d;
+  font-size: 30px;
 }
 
 .next,
 .prev {
   font-size: 16px;
-  font-weight: 700;
-  padding: 10px 20px;
   margin: 0px 15px;
-  border-radius: 6px;
-  color: #fff;
-  background-color: #ff5858;
 }
 
-#playlist {
-  padding: 0px 30px;
+#loop,
+#shuffle {
+  font-size: 16px;
+  margin: 0px 15px;
 }
 
-#playlist h3 {
-  color: #212121;
-  font-size: 28px;
-  font-weight: 400;
-  margin-bottom: 30px;
-  text-align: center;
+#volume {
+  font-size: 16px;
+  min-width: 40px;
 }
 
-#playlist .track {
-  display: block;
-  width: 100%;
-  padding: 15px;
-  font-size: 20px;
-  font-weight: 700;
+#volume-slider {
+  -webkit-appearance: none;
+  height: 10px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
   cursor: pointer;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: steelblue;
+  cursor: pointer;
+}
+
+#volume-slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4caf50;
+  cursor: pointer;
+}
+
+#seekbar {
+  -webkit-appearance: none;
+  width: 800px;
+  margin: 20px 0px;
+  height: 10px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+#seekbar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 25px;
+  border-radius: 0%;
+  background: skyblue;
+  cursor: pointer;
+}
+
+#seekbar::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4caf50;
+  cursor: pointer;
+}
+
+.left-bar {
+  float: left;
   text-align: left;
+  width: 25%;
+  margin-left: 20px;
 }
 
-#playlist .track:hover {
-  color: #ff5858;
+.center-bar {
+  float: left;
+  text-align: center;
+  width: 50%;
 }
 
-#playlist .track.playing {
-  color: #fff;
-  background-image: linear-gradient(to right, #cc2e5d, #ff5858);
+.right-bar {
+  float: left;
+  text-align: right;
+  width: 25%;
+  margin-right: 20px;
 }
 
-.duration {
-  float: right;
+#info {
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 </style>

@@ -11,8 +11,15 @@ import {
   faVolumeMute,
   faRedoAlt,
   faRandom,
+  faStepBackward,
+  faStepForward,
 } from "@fortawesome/free-solid-svg-icons";
-import { faSquare, faClone } from "@fortawesome/free-regular-svg-icons";
+import {
+  faSquare,
+  faClone,
+  faPlayCircle,
+  faPauseCircle,
+} from "@fortawesome/free-regular-svg-icons";
 
 library.add(
   faBars,
@@ -25,6 +32,10 @@ library.add(
   faVolumeOff,
   faVolumeMute,
   faRedoAlt,
-  faRandom
+  faRandom,
+  faPlayCircle,
+  faPauseCircle,
+  faStepBackward,
+  faStepForward
 );
 Vue.component("fa-icon", FontAwesomeIcon);

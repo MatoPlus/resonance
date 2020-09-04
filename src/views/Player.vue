@@ -53,7 +53,9 @@ export default {
   },
   methods: {
     play(selectedTrack) {
-      this.currentTrack.howl.stop();
+      if (this.currentTrack.howl.playing()) {
+        this.currentTrack.howl.stop();
+      }
       this.index = this.tracks.findIndex((track) => track === selectedTrack);
       this.currentTrack.howl.play();
       this.playing = true;
@@ -106,8 +108,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.home {
-  /* overflow: hidden */
+.player {
+  overflow: hidden;
   height: 100%;
 }
 
@@ -115,5 +117,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 0px;
+  height: 90%;
+  overflow: hidden;
 }
 </style>
