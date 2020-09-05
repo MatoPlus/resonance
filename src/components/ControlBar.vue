@@ -109,7 +109,7 @@ export default {
     },
     updateTrackProgress(progress) {
       let trackHowl = this.currentTrack.howl;
-      if (trackHowl.playing()) {
+      if (trackHowl) {
         this.seek = trackHowl.duration() * progress;
         trackHowl.seek(this.seek);
       }
