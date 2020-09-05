@@ -1,7 +1,5 @@
 <template>
-  <div id="background">
-    <img alt="background image" src="background/sample-bg.jpg" />
-  </div>
+  <img alt="background image" src="background/sample-bg.jpg" />
 </template>
 
 <script>
@@ -12,12 +10,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#background {
-  background-color: #282c34;
-}
 img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  height: 100%;
+  width: auto;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="player">
-    <div id="view">
+    <div id="player-view">
       <Background />
       <Playlist :tracks="tracks" :currentTrack="currentTrack" @play="play" />
     </div>
@@ -109,15 +109,15 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .player {
-  overflow: hidden;
+  display: flex;
+  flex-flow: column;
   height: 100%;
 }
 
-#view {
+#player-view {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto 1fr;
   grid-gap: 0px;
-  height: 90%;
-  overflow: hidden;
+  flex: 1 1 auto;
 }
 </style>

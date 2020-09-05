@@ -94,7 +94,7 @@ button:hover {
   display: block;
   width: 100%;
   padding: 15px;
-  font-size: 20px;
+  font-size: 1.1em;
   font-weight: 600;
   cursor: pointer;
   text-align: left;

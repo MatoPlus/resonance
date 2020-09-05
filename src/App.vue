@@ -1,25 +1,22 @@
 <template>
   <div id="app">
-    <Menubar/>
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view class="view"/>
+    <Menubar />
+    <router-view class="view" />
   </div>
 </template>
 
 <style>
-html, body {
+html,
+body {
   height: 100vh;
   margin: 0;
+  background: #2c3e50;
 }
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   display: flex;
   flex-flow: column;
@@ -64,11 +61,11 @@ body {
 
 <script>
 // @ is an alias to /src
-import Menubar from '@/components/Menubar.vue'
+import Menubar from "@/components/Menubar.vue";
 
 export default {
   components: {
-    Menubar
-  }
-}
+    Menubar,
+  },
+};
 </script>

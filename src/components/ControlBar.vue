@@ -182,12 +182,13 @@ span {
 
 .controlbar {
   background: #34475a;
+  text-align: center;
+  flex: 0 1 auto;
 }
 
 .controls {
   display: flex;
-  /* justify-content: center;
-  align-items: center; */
+  padding-bottom: 10px;
 }
 
 button {
@@ -259,7 +260,7 @@ span {
 
 #seekbar {
   -webkit-appearance: none;
-  width: 800px;
+  width: 50vw;
   margin: 20px 0px;
   height: 10px;
   border-radius: 5px;
