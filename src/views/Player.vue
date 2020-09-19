@@ -24,6 +24,7 @@ import Background from "@/components/Background.vue";
 import Playlist from "@/components/Playlist.vue";
 import ControlBar from "@/components/ControlBar.vue";
 const { Howl } = window.require("howler");
+const { ipcRenderer } = window.require("electron");
 
 export default {
   name: "Player",
@@ -86,6 +87,24 @@ export default {
       this.tracks.sort(() => Math.random() - 0.5);
       this.play(this.tracks[0]);
     },
+    addSongToPlaylist(fileName) {
+      let newTrack = {
+        title: fileName.replace(/\.[^/.]+$/, ""),
+        artist: "unknown",
+        howl: null,
+      };
+      newTrack.howl = new Howl({
+        src: [`playlist/${fileName}`],
+        onend: () => {
+          if (this.loop) {
+            this.play(this.currentTrack);
+          } else {
+            this.next();
+          }
+        },
+      });
+      this.tracks.push(newTrack);
+    },
   },
   created() {
     // Set up track howl objects
@@ -102,6 +121,12 @@ export default {
         },
       });
     });
+    ipcRenderer.on(
+      "add-song",
+      function(e, args) {
+        this.addSongToPlaylist(args.fileName);
+      }.bind(this)
+    );
   },
 };
 </script>
