@@ -25,6 +25,8 @@ import Playlist from "@/components/Playlist.vue";
 import ControlBar from "@/components/ControlBar.vue";
 const { Howl } = window.require("howler");
 const { ipcRenderer } = window.require("electron");
+const path = window.require("path");
+const fs = window.require("fs");
 
 export default {
   name: "Player",
@@ -43,13 +45,7 @@ export default {
       index: 0,
       loop: false,
       playing: false,
-      tracks: [
-        {
-          title: 'song title',
-          artist: 'artist name',
-          howl: null
-        },
-      ],
+      tracks: [],
     };
   },
   methods: {
@@ -108,19 +104,26 @@ export default {
   },
   created() {
     // Set up track howl objects
-    this.tracks.forEach((track) => {
-      let file = track.title.replace(/\s/g, "_");
-      track.howl = new Howl({
-        src: [`playlist/${file}.mp3`],
-        onend: () => {
-          if (this.loop) {
-            this.play(this.currentTrack);
-          } else {
-            this.next();
-          }
-        },
-      });
-    });
+    const trackDirectoryPath = path.join(
+      __dirname,
+      "../../../../../../public/playlist"
+    );
+    console.log(trackDirectoryPath);
+    fs.readdir(
+      trackDirectoryPath,
+      function(err, files) {
+        //handling error
+        if (err) {
+          return console.log("Unable to read content: " + err);
+        }
+        //listing all files using forEach
+        files.forEach(
+          function(file) {
+            this.addSongToPlaylist(file);
+          }.bind(this)
+        );
+      }.bind(this)
+    );
     ipcRenderer.on(
       "add-song",
       function(e, args) {
