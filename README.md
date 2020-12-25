@@ -12,3 +12,7 @@ cd resonance
 npm install
 npm run electron:serve
 ```
+
+### Note
+
+Still under development...
